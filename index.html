@@ -90,6 +90,37 @@ h2{font-size:20px;font-weight:700;letter-spacing:-.022em;margin:0 0 4px}
 .claim.kill{border-left-color:var(--risk)}
 .claim.keep{border-left-color:var(--ok)}
 .claim b{color:var(--ink);font-weight:600}
+.big{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0}
+.big small{display:block;font-size:13px;font-weight:600;color:var(--muted);
+  letter-spacing:0;margin-top:5px}
+.rec{background:var(--raised);border:1px solid var(--ok);border-radius:14px;padding:20px 18px;
+  margin-bottom:14px}
+.recgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:14px;
+  margin-top:16px}
+.recgrid div{border-top:1px solid var(--line);padding-top:9px}
+.recgrid dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-weight:700}
+.recgrid dd{margin:3px 0 0;font-size:16px;font-weight:700;letter-spacing:-.015em}
+.pts{list-style:none;padding:0;margin:14px 0 0}
+.pts li{font-size:14px;padding:8px 0 8px 22px;position:relative;color:var(--muted);
+  border-top:1px solid var(--line)}
+.pts li:before{content:"";position:absolute;left:4px;top:15px;width:6px;height:6px;
+  border-radius:50%;background:var(--ok)}
+.pts li b{color:var(--ink);font-weight:600}
+.pts.no li:before{background:var(--risk)}
+details{border-top:1px solid var(--line);padding:10px 0 2px}
+details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);
+  list-style:none;padding:2px 0}
+details summary::-webkit-details-marker{display:none}
+details summary:before{content:"› ";font-weight:700}
+details[open] summary:before{content:"⌄ "}
+details .in{font-size:13.5px;color:var(--muted);padding:8px 0 10px;line-height:1.6}
+details .in p{margin:0 0 8px}
+details .in p:last-child{margin:0}
+.kv{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.kv span{font-size:12.5px;background:var(--chip);border-radius:8px;padding:6px 10px;
+  color:var(--muted)}
+.kv b{color:var(--ink)}
 
 .stat{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .pill{font-size:12px;font-weight:700;letter-spacing:.02em;border-radius:99px;
@@ -154,7 +185,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     <button role="tab" aria-selected="true" data-p="app">The app</button>
     <button role="tab" aria-selected="false" data-p="scen">Scenarios &amp; questions</button>
     <button role="tab" aria-selected="false" data-p="refs">References</button>
-    <button role="tab" aria-selected="false" data-p="ev">Evidence &amp; pricing</button>
+    <button role="tab" aria-selected="false" data-p="ev">Pricing</button>
   </nav>
 </header>
 
@@ -162,83 +193,82 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
 
 <section class="panel on" id="app">
   <h2>The app</h2>
-  <p class="lede">Where the live build sits, and what is behind it.</p>
+  <p class="lede">Where the live build sits, checked again at 14:35 on 21 August.</p>
 
   <a class="applink" href="https://suara-434x42bxnq-uc.a.run.app/start" target="_blank" rel="noopener">
     <span class="al-t">Open the Suara app</span>
     <span class="al-u">suara-434x42bxnq-uc.a.run.app/start</span>
-    <span class="al-s"><span class="dot"></span>Live &middot; verified 21 Aug, 200 on /start with a 404 control</span>
+    <span class="al-s"><span class="dot"></span>Live &middot; 200 on /start, bogus path 404s</span>
   </a>
 
   <div class="card missing">
-    <h3>Two defects on screen one &mdash; both already fixed on our side</h3>
-    <p><b>The hero is the kopitiam.</b> A cafe interior on the first screen tells a salon, a clinic,
-      a hardware shop and a tuition centre that this product is not for them, before they have picked
-      anything. It mis-sells to five of the six categories the very next screen offers. Replaced with
-      a five-foot-way shot that names no trade; the build is using the old asset.</p>
-    <p><b>It promises seventeen questions.</b> The real number once a fact pack loads is 28 or 29.
-      Someone who accepts that promise reaches screen sixteen and discovers twelve more, which is
-      where signups are abandoned. Fixed structurally in the components &mdash; the flow array expands,
-      so anything counting screens counts the truth &mdash; but the deployed build still carries the
-      old copy.</p>
-    <p>Smaller: the browser tab reads &ldquo;Suara &mdash; Your week is ready&rdquo;, which is the
-      dashboard&rsquo;s title sitting on the onboarding page.</p>
+    <h3>Are the questions updated? On our side yes, in the live build no</h3>
+    <ul class="pts">
+      <li><b>Our components are correct.</b> Ran the branch for all six categories: cafe 29 screens,
+        salon 29, clinic 29, retail 28, trades 28, classes 28. No category dead-ends.</li>
+    </ul>
+    <ul class="pts no">
+      <li><b>The deployed build still runs the old 17-screen spine.</b> Walked it again just now:
+        picked Clinic, counters read 01/17 through 06/17, and it never asks for a practice
+        registration number.</li>
+      <li><b>It still opens with &ldquo;Tujuh belas soalan&rdquo;</b> &mdash; seventeen questions.</li>
+      <li><b>Bob&rsquo;s content screen shows a broken counter</b>, rendering literally as
+        &ldquo;content/17&rdquo;.</li>
+    </ul>
+    <p style="margin-top:12px"><b>The categories reached the build. The packs did not.</b> A clinic
+      completes onboarding without ever being asked the two fields the compliance argument rests on.</p>
   </div>
 
-  <div class="card missing">
-    <h3>The branching is not wired &mdash; fix this first</h3>
-    <p>Screen 02 offers all six categories and says <em>&ldquo;this decides which questions you get
-      next&rdquo;</em>. Selecting <b>Clinic or aesthetics</b> changes nothing: the counter stays at
-      02/17, then 03/17, and the flow runs straight through the spine to the end. <b>No fact pack
-      loads.</b></p>
-    <p>So a clinic completes onboarding and is <b>never asked which treatments a licensed
-      practitioner performs, or for the practice registration number</b> &mdash; the two fields the
-      entire compliance argument rests on.</p>
-    <p>The categories reached the build. The packs did not.</p>
+  <div class="card">
+    <h3>Fix order</h3>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>#</th><th>Fix</th><th>Why it ranks here</th></tr></thead>
+        <tbody>
+          <tr><td><b>1</b></td><td>Wire the branching</td>
+            <td>Everything else is cosmetic beside a clinic never being asked its licensing questions</td></tr>
+          <tr><td><b>2</b></td><td>Swap the kopitiam hero</td>
+            <td>Tells five of six categories the product is not for them, two screens before offering
+              them those categories</td></tr>
+          <tr><td><b>3</b></td><td>Count the flow array, drop the hardcoded 17</td>
+            <td>Promising 17 and delivering 29 is where signups get abandoned</td></tr>
+          <tr><td><b>4</b></td><td>Page title, and a step number on the content screen</td>
+            <td>Cosmetic</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="card">
     <h3>What is working</h3>
-    <p>Welcome, language gate, name, category tiles, the wedding sentence with the voice option, and
-      a skip on every screen. <b>Zero console errors across the whole walkthrough.</b> Helper copy is
-      verbatim from the spec.</p>
-    <p>The continue button stays disabled until a language is chosen &mdash; the required-field gate
-      behaving exactly as specified.</p>
-    <p>Bob&rsquo;s content-mix screen is already live at the end: seven categories with
-      &ldquo;a good mix is fine&rdquo; as the escape, which is a better skip than the one I wrote.
-      It sits outside the numbered flow, so it carries no step number while everything else does.</p>
+    <ul class="pts">
+      <li>Welcome, language gate, name, category tiles, the wedding sentence with the voice option,
+        and a skip on every screen.</li>
+      <li><b>Zero console errors</b> across the whole walkthrough. Helper copy verbatim from the spec.</li>
+      <li>Continue stays disabled until a language is picked &mdash; the required-field gate behaving
+        exactly as specified.</li>
+      <li>Bob&rsquo;s content-mix screen is live, with &ldquo;a good mix is fine&rdquo; as the escape
+        &mdash; a better skip than the one I wrote.</li>
+    </ul>
   </div>
 
-  <div class="card">
-    <h3>Order I would fix them in</h3>
-    <p><b>1. Wire the branching.</b> Everything else is cosmetic next to a clinic never being asked
-      its licensing questions.</p>
-    <p><b>2. Swap the hero</b> to the five-foot-way shot.</p>
-    <p><b>3. Drop the hardcoded 17</b> and count the flow array instead &mdash; once packs load it
-      becomes wrong in a more visible way.</p>
-    <p><b>4.</b> Page title, and give the content-mix screen a step number.</p>
-  </div>
-
-  <div class="card">
-    <h3>What exists on our side</h3>
-    <p>Seventeen spine screens and six fact packs, built as React components for Next.js and driven
-      in a browser before hand-off &mdash; onboarding, dashboard, branching, and the holiday
-      calendar that shows dates instead of asking for them.</p>
-    <p>The mockups and both PDFs are with you. The components and the branching went to Jon.</p>
-  </div>
-
-  <div class="card">
-    <h3>Known gaps, stated plainly</h3>
-    <p><b>Instagram profile pre-fill</b> needs Meta app review, which has not been started. The
-      final screen degrades to showing the six posts on their own rather than faking a grid.</p>
-    <p><b>The holiday table</b> computes Merdeka and Malaysia Day locally. Lunar dates &mdash; Raya,
-      Deepavali, Chinese New Year, Thaipusam &mdash; must come from a maintained source, and anything
-      unverified is shown undated rather than guessed.</p>
-    <p><b>Comment replies are ungated.</b> The compliance gate covers posts only. A clinic answering
-      a treatment question in a reply is exactly the exposure the gate exists to prevent.</p>
+  <div class="card missing">
+    <h3>Known gaps</h3>
+    <ul class="pts no">
+      <li><b>Instagram pre-fill needs Meta app review</b>, which has not been started. It takes 2&ndash;4
+        weeks and nothing else can compress it.</li>
+      <li><b>Comment replies are ungated.</b> The compliance gate covers posts only.</li>
+      <li><b>Lunar holiday dates</b> need a maintained source; anything unverified shows undated
+        rather than guessed.</li>
+    </ul>
+    <details><summary>What exists on our side</summary><div class="in">
+      <p>Seventeen spine screens and six fact packs, built as React components for Next.js and driven
+        in a browser before hand-off &mdash; onboarding, dashboard, branching, and the holiday
+        calendar that shows dates instead of asking for them.</p>
+      <p>The mockups and both PDFs are with Reza. The components and the branching went to Jon.</p>
+    </div></details>
   </div>
 </section>
-
 <section class="panel" id="scen">
   <h2>Every scenario a customer goes through</h2>
   <p class="lede">One spine, six branches. Screen 02 is the only screen that changes the rest of the
@@ -268,199 +298,140 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
 </section>
 
 <section class="panel" id="ev">
-  <h2>Evidence &amp; pricing</h2>
-  <p class="lede">What the research actually established, what it killed, and the cost model rebuilt
-    on measured numbers. Every figure here is labelled measured, confirmed, assumed or unknown.</p>
+  <h2>Pricing</h2>
+  <p class="lede">What to charge, why, and the evidence under it.</p>
 
-  <div class="stat">
-    <span class="pill ok">4 confirmed</span>
-    <span class="pill risk">21 killed</span>
-    <span class="pill">21 sources</span>
-    <span class="pill">105 claims extracted</span>
-    <span class="pill ok">6 rate cards fetched 21 Aug</span>
+  <div class="rec">
+    <p class="big">RM299 / month
+      <small>3 months paid in advance &middot; RM897 at signup &middot; 2 revision rounds included</small></p>
+    <div class="recgrid">
+      <div><dt>Cost to serve</dt><dd>RM143</dd></div>
+      <div><dt>Margin</dt><dd>52%</dd></div>
+      <div><dt>Break-even</dt><dd>9.4 rounds</dd></div>
+      <div><dt>Cheapest agency</dt><dd>RM1,800</dd></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Why this price</h3>
+    <ul class="pts">
+      <li><b>RM199 leaves no room.</b> Margin 28% on Opus, and break-even falls to 3&ndash;8 revision
+        rounds. One demanding customer is unprofitable.</li>
+      <li><b>RM199 also puts us in the tool category</b> against Canva plus ChatGPT at about RM50.
+        That is a fight on price we lose.</li>
+      <li><b>At RM299 we are the cheap employee instead</b> &mdash; still 6&times; cheaper than the
+        cheapest agency rate card we found, and 26&times; cheaper than the top.</li>
+      <li><b>3 months up front is already the norm here</b>, so it costs no goodwill and it removes
+        the cash hole that onboarding creates when there is no setup fee.</li>
+      <li><b>2 revisions included is safe</b> with break-even at 9.4 rounds. Charge for further
+        rounds rather than capping them &mdash; a cap reads as punishment, a meter reads as a choice.</li>
+    </ul>
+    <details><summary>Why not RM499</summary><div class="in">
+      <p>RM499 is defensible on the same evidence and carries a 71% margin, which matters given 39%
+        annual churn and a caching tail risk nothing currently monitors. The reason not to open there
+        is that <b>nobody has paid us anything yet</b>. RM299 is high enough to escape the tool
+        comparison and low enough that a no is a real signal about the product rather than the price.</p>
+      <p>Raising later is easy if the first ten convert quickly. Cutting a launch price is not.</p>
+    </div></details>
+    <details><summary>What changed my mind about unlimited posts</summary><div class="in">
+      <p>I argued earlier that volume costs nothing so we should stop rationing posts. <b>That was
+        based on image cost alone, which is genuinely tiny at about 60 sen a post.</b> Once the
+        language model is measured at USD 20 a customer a month, each generation carries real cost
+        and unlimited volume is not free. <b>16 pieces a month stays as the package.</b></p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <h3>The clinic question</h3>
+    <ul class="pts">
+      <li><b>Proposed: RM599 for regulated verticals</b> &mdash; clinics, dental, aesthetics.</li>
+      <li><b>But treat it as a test, not a fact.</b> Research found no evidence any agency prices by
+        vertical or compliance burden. The premium is a bet that the gate is the product.</li>
+      <li><b>It is a cheap bet to run:</b> same build, one price field, and clinics are where the
+        gate demonstrably earns its keep.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec" style="margin-top:34px">The numbers under it</h3>
+
+  <div class="card">
+    <h3>Model choice moves margin more than price does</h3>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>Model</th><th>COGS/mo</th><th>@199</th><th>@299</th><th>@499</th>
+          <th>Break-even</th></tr></thead>
+        <tbody>
+          <tr><td><b>Opus</b></td><td>RM143</td><td>28%</td><td>52%</td><td>71%</td><td>9.4</td></tr>
+          <tr><td><b>Sonnet</b></td><td>RM93</td><td>53%</td><td>69%</td><td>81%</td><td>16.8</td></tr>
+          <tr><td><b>Haiku</b></td><td>RM44</td><td>78%</td><td>85%</td><td>91%</td><td>39.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:11px"><b>But it cannot be a pure cost decision.</b> Haiku and Sonnet both
+      wrote a Merdeka post inviting customers to a shop that is closed that day. Only Opus caught it.
+      <b>Strong model on the gate, cheap model for drafting.</b></p>
+    <details><summary>The full model test</summary><div class="in">
+      <p>Identical brand lock and gate given to all three. Merdeka 2026 falls on Monday 31 August;
+        the test business closes Mondays. Haiku additionally invented &ldquo;limited spots&rdquo; and
+        turned a customer&rsquo;s review into a first-person claim, and asked no questions despite the
+        lock containing no booking method. n=1 per model.</p>
+      <p><b>The expensive thinking is the checking, not the writing.</b></p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <h3>What Malaysian agencies actually charge</h3>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>Agency</th><th>Per month</th><th>Minimum term</th></tr></thead>
+        <tbody>
+          <tr><td><b>JustSimple</b></td><td>RM1,800 / 2,800 / 4,800</td><td>none stated</td></tr>
+          <tr><td><b>FITB</b></td><td>RM2,000 / 3,200 / 4,000</td><td>3 months, in advance</td></tr>
+          <tr><td><b>Flow Digital</b></td><td>RM2,500&ndash;5,500 and 3,800&ndash;7,800</td>
+            <td>3 months, in advance</td></tr>
+          <tr><td><b>shakalakaa</b></td><td>from RM3,499</td><td>rolling 3 months</td></tr>
+          <tr><td><b>All Design Solution</b></td><td>RM7,800 / 9,800 / 13,800</td><td>2 months notice</td></tr>
+          <tr><td><b>Walk Production</b></td><td>quote only</td><td>6 months</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="kv"><span>Entry <b>RM1,800&ndash;3,800</b></span><span>Mid <b>RM2,800&ndash;5,800</b></span>
+      <span>Upper <b>RM5,500&ndash;7,800</b></span><span>Ad spend <b>excluded</b></span></div>
+    <p style="margin-top:12px">Fetched 21 Aug from each agency&rsquo;s own pricing page. Shinjiru
+      blocks us, so no figure is carried for them.</p>
+  </div>
+
+  <div class="card">
+    <h3>What the research settled</h3>
+    <ul class="pts">
+      <li><b>3-month minimum paid in advance is the norm.</b> Month-to-month is explicitly refused by
+        multiple agencies.</li>
+      <li><b>Retainers dominate</b>, and tiers scale on post count and platform count.</li>
+    </ul>
+    <ul class="pts no">
+      <li><b>No evidence regulated verticals pay more.</b> This killed our own price-by-risk argument.</li>
+      <li><b>No agency publishes revision or setup-fee policy.</b> Every specific number was refuted.</li>
+    </ul>
+    <details><summary>Where I got this wrong today</summary><div class="in">
+      <p>I reported these rate cards this morning as &ldquo;fetched directly&rdquo;. They were not
+        &mdash; the research run never opened those pages, and the one Malaysian range it did test it
+        refuted. I asserted a check I had not done.</p>
+      <p>Then I over-corrected and retracted the numbers as well. So I fetched them properly, and the
+        figures are real. <b>The numbers were right; the claim to have verified them was not.</b>
+        That is worse than being wrong, because the same habit eventually produces a figure that is
+        wrong by luck.</p>
+    </div></details>
   </div>
 
   <div class="card missing">
-    <h3>What I got wrong &mdash; and it is not what it first looked like</h3>
-    <p>This morning I told Reza Malaysian agencies charge <b>RM2,000&ndash;7,800 a month</b>, from
-      &ldquo;four published rate cards, <b>fetched directly</b>&rdquo;. That last part was not true.
-      The research run never fetched a rate card: across the whole run Flow Digital appears once,
-      Walk Production once, FITB twice, and none of their websites are among its 21 sources. The one
-      Malaysian price range that run did test, <b>it refuted</b> &mdash; a blog-sourced
-      RM1,120&ndash;4,800, alongside a RM3,000&ndash;8,000 band marked historic 2020&ndash;2023.</p>
-    <p><b>So I asserted a verification I had not done, and then quoted a refuted range as
-      confirmation of it.</b></p>
-    <p><b>Then I over-corrected.</b> Having found the provenance was false, I retracted the numbers
-      too. So I went and actually fetched them &mdash; and the figures themselves are real, printed
-      on the agencies&rsquo; own pricing pages today. <b>The numbers were right. My claim to have
-      checked them was the lie.</b> That is worse than being wrong, not better: I was right by luck,
-      and the same habit will eventually produce a number that is wrong by luck.</p>
-    <p><b>Cause:</b> I read the run&rsquo;s narrative summary and never opened its confirmed and
-      refuted buckets. That summary reads identically whether a claim survived or was killed.</p>
-  </div>
-
-  <div class="card good">
-    <h3>Verified Malaysian rate cards &mdash; fetched 21 Aug from each agency&rsquo;s own site</h3>
-    <div class="escroll">
-      <table class="etab">
-        <thead><tr><th>Agency</th><th>Published monthly price</th><th>What you get</th>
-          <th>Minimum term</th></tr></thead>
-        <tbody>
-          <tr><td><b>JustSimple</b></td><td>RM1,800 / 2,800 / 4,800</td>
-            <td>5 / 10 / 20 posts per network</td><td>none stated</td></tr>
-          <tr><td><b>FITB</b></td><td>RM2,000 / 3,200 / 4,000</td>
-            <td>6 / 9 / 13 posts, incl. 1&ndash;4 reels</td><td><b>3 months, paid in advance</b></td></tr>
-          <tr><td><b>Flow Digital</b></td><td>RM2,500 / 4,500 / 5,500<br>and RM3,800 / 5,800 / 7,800</td>
-            <td>4&ndash;12 posts; reels + shoot days</td><td><b>3 months, paid in advance</b></td></tr>
-          <tr><td><b>shakalakaa</b></td><td>from RM3,499 (SMM)</td>
-            <td>ads mgmt + content + monthly shoot</td><td>rolling 3-month cycles</td></tr>
-          <tr><td><b>All Design Solution</b></td><td>RM7,800 / 9,800 / 13,800</td>
-            <td>full-funnel paid ads + videography</td><td>2 months&rsquo; notice</td></tr>
-          <tr><td><b>Walk Production</b></td><td><i>quote-gated</i></td>
-            <td>content retainers RM2,000&ndash;9,000</td><td><b>6 months</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:11px"><b>Entry tier RM1,800&ndash;3,800. Mid RM2,800&ndash;5,800. Upper
-      RM5,500&ndash;7,800</b>, with one outlier at RM13,800. <b>Ad spend is excluded everywhere it is
-      addressed.</b> Six agencies publishing on their own sites.</p>
-    <p><b>The honest multiple:</b> against the entry tier Suara at RM299 is roughly 6&ndash;13&times;
-      cheaper; against mid and upper tiers, 10&ndash;26&times;. My original &ldquo;10 to 40
-      times&rdquo; overstated the low end.</p>
-    <p><b>Two things that did not survive:</b> Shinjiru is Cloudflare-blocked, so the RM1,120 figure
-      I quoted is <b>still unverified and is not carried here</b>. And search summaries wrongly
-      attributed Flow Digital&rsquo;s prices to JustSimple &mdash; package figures must come from the
-      agency&rsquo;s own page, never a snippet.</p>
-  </div>
-
-  <div class="card good">
-    <h3>What survived verification &mdash; usable</h3>
-    <div class="claim keep"><b>A 3-month minimum, frequently paid three months in advance, is the
-      Malaysian norm.</b> Month-to-month is explicitly refused by multiple agencies; 6- and 12-month
-      terms are outliers. This is the finding that matters commercially: Suara can take cash up front
-      without inventing a setup fee.</div>
-    <div class="claim keep"><b>The monthly retainer is the dominant model</b> for ongoing SMB social
-      media management. Per-post and hourly are real but secondary, and agencies mix models.</div>
-    <div class="claim keep"><b>US benchmark: USD 500&ndash;5,000 a month as the outer envelope, with
-      the typical engagement nearer USD 1,000&ndash;2,500.</b> Tiers scale on post count and platform
-      count, <b>not on client industry</b>. This is a US figure and must not be relabelled Malaysian.</div>
-    <div class="claim keep"><b>No evidence that regulated verticals pay a premium.</b> Nothing
-      surviving supports medical, dental, legal or financial clients paying more for the same social
-      content work, and nothing supports compliance or approval workflow as a pricing driver. This
-      killed our own &ldquo;price by risk&rdquo; argument.</div>
-    <div class="claim keep"><b>Revision policies and setup fees are not established.</b> No agency
-      publishes them and every specific number found was refuted. Treat as open.</div>
-  </div>
-
-  <div class="card">
-    <h3>Killed &mdash; do not reuse these</h3>
-    <div class="claim kill">Malaysian retainers at RM1,120&ndash;4,800, and the historic
-      RM3,000&ndash;8,000 band. <b>Refuted.</b></div>
-    <div class="claim kill">A healthcare-specialist agency&rsquo;s med spa packages at USD
-      1,699&ndash;2,499/mo as evidence of a regulated premium. <b>Refuted.</b></div>
-    <div class="claim kill">Setup fees waived as standard practice; 12-month terms as standard.
-      <b>Refuted.</b></div>
-    <div class="claim kill">Project-based work as the dominant revenue model over retainers.
-      <b>Refuted.</b></div>
-    <p style="margin-top:12px">Seventeen further claims were killed. The pattern: <b>every specific
-      number anyone published about revisions, setup fees or vertical pricing failed
-      verification.</b></p>
-  </div>
-
-  <h3 class="sec" style="margin-top:34px">The cost model, rebuilt</h3>
-  <div class="card missing">
-    <h3>The previous model was wrong in the line that mattered most</h3>
-    <p>It carried the language model at <b>USD 0.03 a generation plus USD 1.50 a month</b>, labelled
-      unknown &mdash; about USD 2.94 a customer a month. The measured figure is <b>USD 20 a customer
-      a month on Opus</b>, from 29,394 real API calls. The dominant cost line was understated roughly
-      sevenfold.</p>
-    <p>It also called that cost <b>infrastructure</b> and assumed multi-tenancy would shrink it.
-      Measured from the billing export, GCP infrastructure is close to nothing &mdash; the entire
-      Suara project is <b>USD 6.70 per 30 days</b>. The cost is Claude tokens, it is per customer,
-      and it does not fall with multi-tenancy.</p>
-    <p><b>Consequence:</b> I told Reza break-even was &ldquo;about 30 revision rounds per post, so
-      revisions are not a margin risk&rdquo;. On measured cost that is <b>single digits on Opus at
-      RM199</b>. Revisions are a real cost question again.</p>
-  </div>
-
-  <div class="card">
-    <h3>The biggest lever is not price &mdash; it is which model runs Suara</h3>
-    <div class="escroll">
-      <table class="etab">
-        <thead><tr><th>Model</th><th>COGS RM/mo</th><th>Margin @199</th><th>@299</th><th>@499</th>
-          <th>Break-even revisions</th></tr></thead>
-        <tbody>
-          <tr><td><b>Opus</b></td><td>143</td><td>28%</td><td>52%</td><td>71%</td><td>9.4</td></tr>
-          <tr><td><b>Sonnet</b></td><td>93</td><td>53%</td><td>69%</td><td>81%</td><td>16.8</td></tr>
-          <tr><td><b>Haiku</b></td><td>44</td><td>78%</td><td>85%</td><td>91%</td><td>39.2</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:11px">At 2 included revisions, assuming 60% of language-model cost scales
-      with volume. <b>A cheap model swings margin more than any price move on the table.</b></p>
-    <p><b>But it cannot be a pure cost decision.</b> Given an identical brand lock and gate, Haiku and
-      Sonnet both wrote a cheerful Merdeka post inviting customers to a shop that is closed that day.
-      Only Opus caught it and refused to write. Haiku additionally invented &ldquo;limited spots&rdquo;
-      and turned a customer&rsquo;s review into a first-person claim. <b>The expensive thinking is the
-      checking, not the writing</b> &mdash; strong model on the gate, cheap model for drafting from a
-      cleared brief.</p>
-  </div>
-
-  <div class="card">
-    <h3>How sensitive is it to what we still do not know</h3>
-    <p>Break-even revision rounds per post, across the unknown share of language-model cost that
-      scales with volume:</p>
-    <div class="escroll">
-      <table class="etab">
-        <thead><tr><th>Price</th><th>Opus 30%</th><th>Opus 60%</th><th>Opus 90%</th>
-          <th>Haiku 30%</th><th>Haiku 60%</th><th>Haiku 90%</th></tr></thead>
-        <tbody>
-          <tr><td><b>RM199</b></td><td>8.1</td><td>4.7</td><td>3.3</td><td>33.2</td><td>24.7</td><td>19.6</td></tr>
-          <tr><td><b>RM299</b></td><td>16.3</td><td>9.4</td><td>6.6</td><td>52.9</td><td>39.2</td><td>31.2</td></tr>
-          <tr><td><b>RM499</b></td><td>32.8</td><td>19.0</td><td>13.4</td><td>92.1</td><td>68.4</td><td>54.4</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:11px">On Opus at RM199 an unbounded revision promise is genuinely unsafe.
-      Everywhere else there is room, but the amount of room is set by a number nobody has measured.</p>
-  </div>
-
-  <div class="card">
-    <h3>Three price shapes, with consequences</h3>
-    <div class="escroll">
-      <table class="etab">
-        <thead><tr><th>Shape</th><th>Price</th><th>Contribution</th><th>Margin</th>
-          <th>Break-even</th><th>Cash at signup</th></tr></thead>
-        <tbody>
-          <tr><td><b>A &middot; Flat</b></td><td>RM299</td><td>RM156</td><td>52%</td><td>9.4</td><td>RM897</td></tr>
-          <tr><td><b>B &middot; By risk</b></td><td>RM299 / RM599</td><td>RM156 / RM456</td>
-            <td>52% / 76%</td><td>9.4 / 23.7</td><td>RM897 / RM1,797</td></tr>
-          <tr><td><b>C &middot; Metered</b></td><td>RM149 + RM15/post</td><td>RM207</td><td>63%</td>
-            <td>10.9</td><td>RM987</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:11px"><b>A</b> is simplest to sell and carries all the revision risk on our
-      side. <b>B</b> prices by exposure &mdash; but the research refuted the premium, so it is a
-      positioning bet on the gate being the product, not a market norm. <b>C</b> removes the
-      unbounded-revision problem structurally rather than by policy, earns most at 12 published posts,
-      and is the shape that survives a per-interaction future.</p>
-    <p>All three assume Opus and the conservative 60% marginal split. Cash at signup reflects the
-      three months in advance the market already expects.</p>
-  </div>
-
-  <div class="card missing">
-    <h3>What still has no number</h3>
-    <p><b>Whether SST is included</b> in any published agency price &mdash; not one of the seven
-      pages mentions tax treatment. <b>How fresh most of those rate cards are</b> &mdash; only one
-      carries an explicit last-updated date; the rest offer an auto-generated copyright year, and
-      JustSimple&rsquo;s card still offers Twitter and Pinterest, so it is probably stale.</p>
-    <p><b>Revisions per post</b> &mdash; unmeasurable until a real customer, so modelled as a range.
-      <b>The share of language-model cost that scales with volume</b> &mdash; decides what a revision
-      actually costs. <b>Completion rate across 29 screens</b> &mdash; with self-serve onboarding and
-      nobody there to rescue a stalled customer, this is the binding constraint: at 55% completion you
-      need 182 signups per 100 customers, at 70% you need 143. Every point of completion is a point of
-      paid acquisition you do not have to buy.</p>
+    <h3>Still unknown</h3>
+    <ul class="pts no">
+      <li><b>Revisions per post.</b> Unmeasurable until a real customer. Measure it on customer one.</li>
+      <li><b>Completion rate across 29 screens.</b> At 55% you need 182 signups per 100 customers, at
+        70% you need 143. With self-serve onboarding this is the binding constraint.</li>
+      <li><b>How much of the language-model bill scales with volume.</b> It decides what a revision
+        really costs.</li>
+    </ul>
   </div>
 </section>
 
