@@ -90,6 +90,7 @@ h2{font-size:20px;font-weight:700;letter-spacing:-.022em;margin:0 0 4px}
 .claim.kill{border-left-color:var(--risk)}
 .claim.keep{border-left-color:var(--ok)}
 .claim b{color:var(--ink);font-weight:600}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:var(--chip);padding:1px 5px;border-radius:5px}
 .big{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0}
 .big small{display:block;font-size:13px;font-weight:600;color:var(--muted);
   letter-spacing:0;margin-top:5px}
@@ -186,6 +187,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     <button role="tab" aria-selected="false" data-p="scen">Scenarios &amp; questions</button>
     <button role="tab" aria-selected="false" data-p="refs">References</button>
     <button role="tab" aria-selected="false" data-p="ev">Pricing</button>
+    <button role="tab" aria-selected="false" data-p="rules">Rules</button>
   </nav>
 </header>
 
@@ -432,6 +434,235 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
       <li><b>How much of the language-model bill scales with volume.</b> It decides what a revision
         really costs.</li>
     </ul>
+  </div>
+</section>
+
+<section class="panel" id="rules">
+  <h2>Rules</h2>
+  <p class="lede">Every rule that changes what a customer is asked. Generated from
+    <code>flags.js</code>, so this page cannot drift from what the flow does.</p>
+
+  <div class="stat">
+    <span class="pill ok">18 rules</span>
+    <span class="pill ok">48 combinations to check</span>
+    <span class="pill risk">2,563 if we branched on raw answers</span>
+    <span class="pill">6 verticals</span>
+  </div>
+
+  <div class="card">
+    <h3>Does 250,000 paths matter? No &mdash; it counts the wrong thing</h3>
+    <ul class="pts">
+      <li><b>Paths are an output, not a thing you maintain.</b> Nobody writes a path. They fall out
+        of the rules, the way a calculator's answers fall out of its operations. You test the
+        operations, not every pair of numbers.</li>
+      <li><b>Consistency comes from construction.</b> Every path is assembled from the same spine,
+        the same pack and the same rules, so paths are consistent by build &mdash; not by inspection.</li>
+      <li><b>So the number that matters is 18, not 261,121.</b> That is how many rules can
+        independently be wrong, and it is a number a person can read in one sitting.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Is it a lot of work? Bounded &mdash; as long as we never enumerate</h3>
+    <div class="escroll"><table class="etab">
+      <thead><tr><th>Work</th><th>Size</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>Declare the rules</td><td>18 booleans</td><td>one-off, mostly done below</td></tr>
+        <tr><td>Make reference selection a pure function</td><td>one function</td><td>one-off</td></tr>
+        <tr><td>Coverage check over every combination</td><td>48 checks</td><td>automatic, seconds</td></tr>
+        <tr><td>Invariants over random paths</td><td>~10 assertions</td><td>automatic, thousands of paths</td></tr>
+        <tr><td>Human review of generated posts</td><td>a few per vertical</td><td>ongoing, sampled</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:11px"><b>The unbounded version is manual QA per path, and that is the one to
+      refuse.</b> Checking 261,121 paths at one second each is three days of machine time and no
+      human ever reads the result.</p>
+  </div>
+
+  <div class="card">
+    <h3>The method, in four layers</h3>
+    <ul class="pts">
+      <li><b>1. Derive flags, never branch on raw answers.</b> &ldquo;Which treatments do you
+        offer&rdquo; has 511 possible answers. &ldquo;Is any of this medically supervised&rdquo; has
+        two. Branch on the second.</li>
+      <li><b>2. Coverage.</b> Every one of the 48 combinations must resolve to a complete
+        question set and at least one reference. Exhaustive, because the space is small.</li>
+      <li><b>3. Invariants.</b> Assert what must be true on <i>every</i> path &mdash; a compliance
+        question is never skippable for a business that needs it, no claim appears without evidence
+        on file, no path runs past its screen budget &mdash; then run them over thousands of randomly
+        generated answer sets. <b>This is what buys confidence across 261,121 without enumerating.</b></li>
+      <li><b>4. Golden paths.</b> A dozen representative journeys, snapshot-tested, for humans to read.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec" style="margin-top:34px">The 18 rules</h3>
+  <p class="lede" style="margin-bottom:14px">Status is <b>proposed</b> throughout: these are defined
+    and reviewable in <code>flags.js</code>, and not yet wired into the flow.</p>
+
+  <div class="card">
+    <h3>Clinic or aesthetics <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim keep">
+      <b>medically_supervised</b> &mdash; true when any treatment is performed by a licensed medical practitioner.<br>
+      <span style="font-size:12.5px">from <b>C02</b> &ldquo;Which of those are performed by a licensed medical practitioner?&rdquo;
+      <br>&rarr; only asks C03, C09; makes C03 required</span>
+      <details><summary>why</summary><div class="in"><p>A practice registration number is meaningless for a beautician and mandatory for an aesthetic clinic. Today we ask everyone and let anyone skip.</p></div></details>
+    </div>
+
+    <div class="claim keep">
+      <b>shows_before_after</b> &mdash; true when before-and-after images are permitted for their treatments.<br>
+      <span style="font-size:12.5px">from <b>C04</b> &ldquo;Are before-and-after images permitted for your treatments?&rdquo;
+      <br>&rarr; only asks C12; makes C12 required</span>
+      <details><summary>why</summary><div class="in"><p>Patient photo consent only matters if they intend to post patients. If they do, it must not be skippable.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>prices_publishable</b> &mdash; true when prices may be published rather than consultation-only.<br>
+      <span style="font-size:12.5px">from <b>C07</b> &ldquo;Prices — publishable, or consultation only?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Does not change which questions are asked — it changes whether a price may appear in a generated post. A gate rule, not a flow rule.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Classes or studio <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim keep">
+      <b>teaches_minors</b> &mdash; true when any selected age group is under 18.<br>
+      <span style="font-size:12.5px">from <b>K05</b> &ldquo;Age groups and levels you take.&rdquo;
+      <br>&rarr; only asks K10; makes K10 required</span>
+      <details><summary>why</summary><div class="in"><p>K10 already says &quot;if any are under 18, do you hold written consent&quot; — the dependency is written into the question copy but not enforced. Today an adults-only yoga studio is asked about child consent, and a childrens tuition centre may skip it. Both are wrong.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>has_trial</b> &mdash; true when a trial class is offered.<br>
+      <span style="font-size:12.5px">from <b>K08</b> &ldquo;Do you offer a trial class?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Unlocks a call-to-action the generator may use. No new questions.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>fixed_intakes</b> &mdash; true when intake dates are given rather than rolling enrolment.<br>
+      <span style="font-size:12.5px">from <b>K04</b> &ldquo;When are your next intake dates?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Drives calendar-aware posts before each intake.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Food &amp; drink <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim ">
+      <b>makes_dietary_claims</b> &mdash; true when halal, organic, MSG-free or similar is claimed.<br>
+      <span style="font-size:12.5px">from <b>F03</b> &ldquo;Any of these true of your food?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Every one of these needs evidence on file before it may appear in a post. The flag is what the gate checks against.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>takes_bookings</b> &mdash; true when bookings are accepted.<br>
+      <span style="font-size:12.5px">from <b>F06</b> &ldquo;Do you take bookings? How?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Decides whether a post may end on &quot;book a table&quot;. Without it the generator has no valid call to action and should ask.</p></div></details>
+    </div>
+
+    <div class="claim keep">
+      <b>has_own_photos</b> &mdash; true when they supply their own food photos.<br>
+      <span style="font-size:12.5px">from <b>F09</b> &ldquo;Do you have food photos we can use, or do we generate?&rdquo;
+      <br>&rarr; only asks F12; makes F12 required</span>
+      <details><summary>why</summary><div class="in"><p>Who took the photos, and whether we may use them, is only a question if photos exist. If they do, it is a rights question we must not skip.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Salon or barber <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim keep">
+      <b>shows_before_after</b> &mdash; true when before-and-afters may be posted.<br>
+      <span style="font-size:12.5px">from <b>S06</b> &ldquo;May we post before-and-afters, and do your clients consent?&rdquo;
+      <br>&rarr; makes S06 required</span>
+      <details><summary>why</summary><div class="in"><p>Client consent is the whole risk in a salon feed.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>does_bridal</b> &mdash; true when bridal or event styling is offered.<br>
+      <span style="font-size:12.5px">from <b>S09</b> &ldquo;Do you do bridal or event styling?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>A seasonal content line the generator can plan against.</p></div></details>
+    </div>
+
+    <div class="claim keep">
+      <b>has_own_photos</b> &mdash; true when existing photos are supplied.<br>
+      <span style="font-size:12.5px">from <b>S12</b> &ldquo;Who took your existing photos, and can we use them?&rdquo;
+      <br>&rarr; only asks S12; makes S12 required</span>
+      <details><summary>why</summary><div class="in"><p>Same rights question as F12.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Shop or product <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim keep">
+      <b>sells_online</b> &mdash; true when they sell anywhere other than in person.<br>
+      <span style="font-size:12.5px">from <b>R04</b> &ldquo;Where can people actually buy?&rdquo;
+      <br>&rarr; only asks R06, R08</span>
+      <details><summary>why</summary><div class="in"><p>Delivery times and returns policy are meaningless for a stall that only sells over a counter.</p></div></details>
+    </div>
+
+    <div class="claim keep">
+      <b>brand_restricted</b> &mdash; true when they stock a brand that restricts advertising.<br>
+      <span style="font-size:12.5px">from <b>R09</b> &ldquo;Do you stock a brand that restricts how you advertise it?&rdquo;
+      <br>&rarr; makes R09 required</span>
+      <details><summary>why</summary><div class="in"><p>A stocked brand can forbid discounting language outright.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>has_own_photos</b> &mdash; true when product photos are supplied.<br>
+      <span style="font-size:12.5px">from <b>R11</b> &ldquo;Do you have product photos, or do we generate?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Decides generate-vs-use, which changes image cost and look.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Trades and home <span style="color:var(--muted);font-weight:600">&middot; 3 rules
+      &middot; 8 combinations</span></h3>
+
+    <div class="claim keep">
+      <b>licensed</b> &mdash; true when they hold a licence or certification.<br>
+      <span style="font-size:12.5px">from <b>T06</b> &ldquo;Are you licensed or certified? By whom?&rdquo;
+      <br>&rarr; makes T06 required</span>
+      <details><summary>why</summary><div class="in"><p>Claiming &quot;licensed&quot; without one is the single most dangerous line a trades post can carry.</p></div></details>
+    </div>
+
+    <div class="claim ">
+      <b>emergency_work</b> &mdash; true when emergency or after-hours work is offered.<br>
+      <span style="font-size:12.5px">from <b>T04</b> &ldquo;Do you do emergency or after-hours work?&rdquo;
+      <br>&rarr; no change to the questions; used by the gate when writing</span>
+      <details><summary>why</summary><div class="in"><p>Unlocks urgency content, which is otherwise a fabrication.</p></div></details>
+    </div>
+
+    <div class="claim keep">
+      <b>has_job_photos</b> &mdash; true when job photos exist.<br>
+      <span style="font-size:12.5px">from <b>T09</b> &ldquo;Do you have job photos, and do the homeowners permit their use?&rdquo;
+      <br>&rarr; only asks T09; makes T09 required</span>
+      <details><summary>why</summary><div class="in"><p>Homeowner permission is required before a job photo may be posted.</p></div></details>
+    </div>
+  </div>
+
+  <div class="card missing">
+    <h3>The rule that proves the point</h3>
+    <p>K10 asks <i>&ldquo;do students appear in photos &mdash; and if any are under 18, do you hold
+      written consent&rdquo;</i>. <b>The dependency is written into the question itself and enforced
+      nowhere.</b></p>
+    <p>So today an adults-only yoga studio is asked about child consent, and a children&rsquo;s
+      tuition centre is allowed to skip it. <b>Both are wrong, and the second one is the one that
+      matters.</b> One rule &mdash; teaches_minors &mdash; fixes both.</p>
   </div>
 </section>
 
