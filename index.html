@@ -340,9 +340,9 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
       <small>Regulated trades RM899 &middot; 3 months paid in advance &middot; 2 revision rounds
       included &middot; founding customers RM299 for their first 3 months</small></p>
     <div class="recgrid">
-      <div><dt>Cost to serve</dt><dd>RM143</dd></div>
-      <div><dt>Margin</dt><dd>76%</dd></div>
-      <div><dt>Break-even</dt><dd>23.7 rounds</dd></div>
+      <div><dt>Cost to serve</dt><dd>RM28</dd></div>
+      <div><dt>Margin</dt><dd>95%</dd></div>
+      <div><dt>Break-even</dt><dd>126 rounds</dd></div>
       <div><dt>Cash at signup</dt><dd>RM1,797</dd></div>
     </div>
   </div>
@@ -359,8 +359,11 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
         is the worst cohort to recruit on purpose.</li>
       <li><b>3 months up front is already the norm here</b>, so it costs no goodwill and it removes
         the cash hole that onboarding creates when there is no setup fee.</li>
-      <li><b>2 revisions included is safe</b> with break-even at 23.7 rounds. Charge for further
-        rounds rather than capping them &mdash; a cap reads as punishment, a meter reads as a choice.</li>
+      <li><b>2 revisions included is safe</b> &mdash; break-even is 126 rounds. Cap them for sanity,
+        not for cost: a heavy reviser tells us the brand lock is wrong, not that we are losing money.</li>
+      <li><b>Cost is a floor check, not an input.</b> At RM28 to serve, every price on this page
+        clears it comfortably. The price is set by what the outcome is worth and what the alternative
+        costs &mdash; not by our cost, which should stay low and stay out of the pricing argument.</li>
     </ul>
     <details><summary>Why a founding discount rather than a lower price</summary><div class="in">
       <p>Founding customers pay RM299 for three months, explicitly time-boxed, then RM599. Same cheap
@@ -393,16 +396,16 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
         <tr><td>Revision rounds included</td><td>2</td><td>2</td><td>2</td></tr>
         <tr><td>Compliance gate</td><td>yes</td><td>yes</td><td>yes, plus the risk pack</td></tr>
         <tr><td>Intake screens</td><td>28&ndash;29</td><td>28&ndash;29</td><td>29, 5 risk fields</td></tr>
-        <tr><td><b>Cost to serve</b></td><td>RM143</td><td>RM143</td><td>RM143</td></tr>
-        <tr><td><b>Contribution</b></td><td>RM156</td><td><b>RM456</b></td><td><b>RM756</b></td></tr>
-        <tr><td><b>Margin</b></td><td>52%</td><td><b>76%</b></td><td><b>84%</b></td></tr>
-        <tr><td>Break-even revisions</td><td>9.4</td><td>23.7</td><td>38.0</td></tr>
+        <tr><td><b>Cost to serve</b></td><td>RM28</td><td>RM28</td><td>RM28</td></tr>
+        <tr><td><b>Contribution</b></td><td>RM271</td><td><b>RM571</b></td><td><b>RM871</b></td></tr>
+        <tr><td><b>Margin</b></td><td>91%</td><td><b>95%</b></td><td><b>97%</b></td></tr>
+        <tr><td>Break-even revisions</td><td>61</td><td>126</td><td>190</td></tr>
         <tr><td>Cash at signup (3 mo)</td><td>RM897</td><td>RM1,797</td><td>RM2,697</td></tr>
-        <tr><td>LTV at 4%/mo churn</td><td>RM3,897</td><td>RM11,397</td><td>RM18,897</td></tr>
+        <tr><td>LTV at 4%/mo churn</td><td>RM6,764</td><td>RM14,264</td><td>RM21,764</td></tr>
       </tbody>
     </table></div>
-    <p style="margin-top:11px"><b>Cost to serve is the same in all three</b> &mdash; RM143, of which
-      <b>RM124 is the language model</b>, RM17 images and RM2 infrastructure, across 80 generations a
+    <p style="margin-top:11px"><b>Cost to serve is the same in all three</b> &mdash; RM28, of which
+      <b>RM17 is images</b>, RM9 the language model and RM2 infrastructure, across 80 generations a
       month. It does not move with price, so the margin difference is entirely price.</p>
     <p><b>Everything is included in every tier.</b> The only thing that varies is exposure.</p>
 
@@ -435,21 +438,22 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
   <h3 class="sec" style="margin-top:34px">The numbers under it</h3>
 
   <div class="card">
-    <h3>Model choice moves margin more than price does</h3>
+    <h3>Model choice is a safety decision, not a cost one</h3>
     <div class="escroll">
       <table class="etab">
         <thead><tr><th>Model</th><th>COGS/mo</th><th>@299</th><th>@599</th><th>@899</th>
           <th>Break-even @599</th></tr></thead>
         <tbody>
-          <tr><td><b>Opus</b></td><td>RM143</td><td>52%</td><td>76%</td><td>84%</td><td>23.7</td></tr>
-          <tr><td><b>Sonnet</b></td><td>RM93</td><td>69%</td><td>84%</td><td>90%</td><td>38.3</td></tr>
-          <tr><td><b>Haiku</b></td><td>RM44</td><td>85%</td><td>93%</td><td>95%</td><td>83.0</td></tr>
+          <tr><td><b>Opus</b></td><td>RM28</td><td>91%</td><td>95%</td><td>97%</td><td>126</td></tr>
+          <tr><td><b>Sonnet</b></td><td>RM24</td><td>92%</td><td>96%</td><td>97%</td><td>145</td></tr>
+          <tr><td><b>Haiku</b></td><td>RM21</td><td>93%</td><td>97%</td><td>98%</td><td>167</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:11px"><b>But it cannot be a pure cost decision.</b> Haiku and Sonnet both
-      wrote a Merdeka post inviting customers to a shop that is closed that day. Only Opus caught it.
-      <b>Strong model on the gate, cheap model for drafting.</b></p>
+    <p style="margin-top:11px"><b>Opus costs about RM6 a month more than Haiku.</b> That settles it:
+      Haiku and Sonnet both wrote a Merdeka post inviting customers to a shop that was closed that
+      day, and only Opus caught it. <b>Run the strong model &mdash; at this scale the safety is
+      effectively free.</b></p>
     <details><summary>The full model test</summary><div class="in">
       <p>Identical brand lock and gate given to all three. Merdeka 2026 falls on Monday 31 August;
         the test business closes Mondays. Haiku additionally invented &ldquo;limited spots&rdquo; and
