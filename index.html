@@ -154,6 +154,21 @@ details .in p:last-child{margin:0}
 .kv span{font-size:12.5px;background:var(--chip);border-radius:8px;padding:6px 10px;
   color:var(--muted)}
 .kv b{color:var(--ink)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.ccard{background:var(--raised);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  display:flex;flex-direction:column}
+.ccard img{width:100%;height:150px;object-fit:cover;object-position:top center;display:block;
+  border-bottom:1px solid var(--line)}
+.cbody{padding:14px 15px 16px}
+.cbody h4{font-size:15px;font-weight:700;margin:0 0 3px;letter-spacing:-.015em;
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cprice{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.ctag{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ok);margin:0 0 8px}
+.ctag.risk{color:var(--risk)}
+.cbody p{font-size:13px;color:var(--muted);margin:0 0 7px;line-height:1.5}
+.cbody p b{color:var(--ink);font-weight:600}
+.cnote{font-size:12.5px;padding-top:8px;border-top:1px solid var(--line)}
 
 .stat{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .pill{font-size:12px;font-weight:700;letter-spacing:.02em;border-radius:99px;
@@ -220,6 +235,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     <button role="tab" aria-selected="false" data-p="refs">References</button>
     <button role="tab" aria-selected="false" data-p="ev">Pricing</button>
     <button role="tab" aria-selected="false" data-p="rules">Rules</button>
+    <button role="tab" aria-selected="false" data-p="comp">Competitors</button>
   </nav>
 </header>
 
@@ -925,6 +941,152 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     </ul>
     <p style="margin-top:11px;font-size:13px;color:var(--muted)">Status: defined and reviewable in
       <code>flags.js</code>, not yet wired into the flow. This page is generated from that file.</p>
+  </div>
+</section>
+
+<section class="panel" id="comp">
+  <h2>Competitors</h2>
+  <p class="lede">The six Malaysian agencies we price-verified, and what their work actually looks
+    like. Every screenshot below was taken from their live site on 21 August.</p>
+
+  <div class="scale">
+    <div class="sc sc-a"><b>RM37</b><span>our cost per published post at RM599</span></div>
+    <div class="sc sc-c"><b>RM308&ndash;557</b><span>agency cost per post, entry to upper tier</span></div>
+    <div class="sc sc-c"><b>RM1,300</b><span>All Design Solution, per asset</span></div>
+  </div>
+  <p class="capt">Nobody in the set is below roughly RM300 a post. That is the gap, and it is not
+    close.</p>
+
+  <div class="card missing">
+    <h3>The finding that changes our pitch: shakalakaa already sells compliance</h3>
+    <p><b>They are the only one of the six who names Malaysian regulation</b> &mdash; KKM/MOH
+      aesthetic guidelines, the Medicines (Advertisement &amp; Sale) Act 1956, MDC, PHFSA, the Food
+      Act 1983, the Moneylenders Act 1951. And they have <b>productised</b> it: a advertised
+      &ldquo;KKM ad checker&rdquo;, and a &ldquo;live-selling claim checker&rdquo; that catches
+      freshness and health-benefit claims.</p>
+    <p>Verbatim from their clinic page: campaigns meet the rules <i>&ldquo;from the first
+      draft&rdquo;</i>, <i>&ldquo;no before/after imagery, no outcome guarantees&rdquo;</i>,
+      <i>&ldquo;never put your clinic&rsquo;s reputation or licence at risk&rdquo;.</i></p>
+    <p><b>That is our pitch, live in market, at RM2,500&ndash;6,000 a month.</b></p>
+    <p><b>The opening that remains &mdash; and it is narrower than I first said:</b> they apply it to
+      <b>ads</b>, campaigns they run for you. Nobody applies it to <b>organic content</b>, every
+      week, at the moment the post is written. That distinction is real, but it is a thinner wedge
+      than &ldquo;nobody does this&rdquo;.</p>
+  </div>
+
+  <h3 class="sec" style="margin-top:34px">Who they are</h3>
+  <div class="cgrid">
+
+    <div class="ccard">
+      <img src="comp/shakalakaa.jpg" alt="shakalakaa services and fees page">
+      <div class="cbody">
+        <h4>shakalakaa <span class="cprice">RM2,500&ndash;6,000</span></h4>
+        <p class="ctag risk">The one to actually worry about</p>
+        <p>Performance-marketing led &mdash; Meta and Google ads, landing pages, WhatsApp funnels.
+          Clinics first, F&amp;B second. <b>Compliance is their positioning.</b></p>
+        <p class="cnote">⚠️ Every case study is anonymised &mdash; &ldquo;a skincare brand in KL&rdquo;.
+          No client is named anywhere. No deliverable spec published.</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <img src="comp/alldesign.jpg" alt="All Design Solution social media page">
+      <div class="cbody">
+        <h4>All Design Solution <span class="cprice">RM7,800&ndash;13,800</span></h4>
+        <p class="ctag risk">The one in our lane</p>
+        <p>A real design studio: packaging, food photography, art direction. Roughly 60% F&amp;B
+          &mdash; Dutch Lady, Sri Nona, Fish &amp; Co, Daebak, Vico.</p>
+        <p class="cnote">⚠️ Every case-study image is dated <b>2019</b>. Showcase is seven years old.
+          Headline stats contradict the case pages: &ldquo;+2790% IG followers&rdquo; is 180
+          followers on the actual page.</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <img src="comp/flowdigital.jpg" alt="Flow Digital social media page">
+      <div class="cbody">
+        <h4>Flow Digital <span class="cprice">RM3,800&ndash;7,800</span></h4>
+        <p class="ctag risk">Already building AI agents</p>
+        <p>Video-shoot led: 4&ndash;10 reels a month with <b>paid talent and on-ground shooting</b>.
+          Enterprise clients &mdash; GXBank, F&amp;N, Daikin.</p>
+        <p class="cnote">⚠️ Their banner now reads &ldquo;AI Workflows, AI Agents &amp; Vibe-Coded
+          Apps &mdash; now live for Malaysian business&rdquo;. <b>Sells social media and publishes
+          zero social work</b> &mdash; the portfolio is all web and app design.</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <img src="comp/fitb.jpg" alt="FITB social media management page">
+      <div class="cbody">
+        <h4>FITB <span class="cprice">RM2,000&ndash;4,000</span></h4>
+        <p class="ctag">Cheapest real spec</p>
+        <p>6 to 13 posts a month, in-house designers and video editors, English/Chinese/Malay.
+          <b>RM308&ndash;356 per post.</b></p>
+        <p class="cnote">⚠️ Also sells social and shows none of it &mdash; six portfolio projects,
+          all websites. Their process says the ideas come from <b>you</b>:
+          &ldquo;the best content ideas come from collaboration between the client and social media
+          team&rdquo;.</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <img src="comp/walkproduction.jpg" alt="Walk Production social media page">
+      <div class="cbody">
+        <h4>Walk Production <span class="cprice">quote only</span></h4>
+        <p class="ctag">Not really a competitor</p>
+        <p>Corporate design house &mdash; annual reports, branding for TNB, Bank Islam, AIA.
+          6/12/20 posts a month, 6-month minimum.</p>
+        <p class="cnote">Social is <b>4 of 107 projects</b>, under 4% of output. Their social work
+          uses client-supplied approved assets, not original photography. The only competitor whose
+          case study names its measurement window and data source.</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <img src="comp/justsimple.jpg" alt="JustSimple social media management page">
+      <div class="cbody">
+        <h4>JustSimple <span class="cprice">RM1,800&ndash;4,800</span></h4>
+        <p class="ctag">Weakest of the six</p>
+        <p>A web-design shop that also sells social. Corporate and industrial clients &mdash; KLK,
+          POS Logistics, Toshiba. Nineteen years old.</p>
+        <p class="cnote">⚠️ No social spec published at all &mdash; no posts per month, no process, no
+          price. No project pages; the portfolio links out to clients&rsquo; live sites. Zero SME
+          lifestyle clients.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <h3 class="sec" style="margin-top:34px">Where we actually stand</h3>
+
+  <div class="card good">
+    <h3>What we genuinely beat them on</h3>
+    <ul class="pts">
+      <li><b>Price per post: RM37 against RM308&ndash;1,300.</b> Not a discount &mdash; a different
+        order of magnitude.</li>
+      <li><b>Speed.</b> All Design Solution, verbatim: <i>&ldquo;All contents &amp; artwork will be
+        sent to you 2 weeks in advanced before posting.&rdquo;</i> Two weeks. We are immediate.</li>
+      <li><b>They can&rsquo;t show you the work.</b> Two of six sell social retainers and publish no
+        social samples at all. A third&rsquo;s showcase is from 2019.</li>
+      <li><b>Nobody gates organic content.</b> One agency checks ads for compliance. None check the
+        weekly posts.</li>
+      <li><b>They need you to bring the ideas.</b> FITB says so outright. Our intake means the
+        business supplies facts once, not ideas every week.</li>
+    </ul>
+  </div>
+
+  <div class="card missing">
+    <h3>What we do not beat them on &mdash; and should stop pretending</h3>
+    <ul class="pts no">
+      <li><b>Craft at the top end.</b> All Design Solution shoots product photography with proper art
+        direction. Flow Digital films in-store with paid talent. <b>That is photographed. Ours is
+        generated.</b> At RM7,800 they are not overcharging for what they deliver.</li>
+      <li><b>Compliance is no longer an empty field.</b> shakalakaa got there first, in ads.</li>
+      <li><b>An agency is moving into our lane from above.</b> Flow Digital already sells AI agents
+        to Malaysian businesses, with the client relationships and local brand we don&rsquo;t have.</li>
+      <li><b>We have no case studies.</b> Every one of them has named clients or at least anonymised
+        results. We have none, because we have no customers yet.</li>
+    </ul>
   </div>
 </section>
 
