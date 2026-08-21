@@ -91,6 +91,38 @@ h2{font-size:20px;font-weight:700;letter-spacing:-.022em;margin:0 0 4px}
 .claim.keep{border-left-color:var(--ok)}
 .claim b{color:var(--ink);font-weight:600}
 code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:var(--chip);padding:1px 5px;border-radius:5px}
+.rg{max-width:100%;height:auto;display:block;min-width:660px}
+.rg .nq{fill:var(--raised);stroke:var(--line)}
+.rg .nf{fill:var(--adapt-bg);stroke:var(--adapt)}
+.rg .nn{fill:var(--chip);stroke:var(--line);stroke-dasharray:3 3}
+.rg .nonly{fill:var(--ok-bg);stroke:var(--ok)}
+.rg .nreq{fill:var(--tint);stroke:var(--risk)}
+.rg .nboth{fill:var(--tint);stroke:var(--risk)}
+.rg .nid{font:700 12px ui-sans-serif,system-ui;fill:var(--ink)}
+.rg .nflag{font:700 12.5px ui-monospace,Menlo,monospace;fill:var(--adapt)}
+.rg .nsub{font:400 10.5px ui-sans-serif,system-ui;fill:var(--muted)}
+.rg .nsub2{font:400 9.5px ui-sans-serif,system-ui;fill:var(--muted)}
+.rg .ntag{font:700 9px ui-sans-serif,system-ui;fill:var(--risk);letter-spacing:.05em;
+  text-transform:uppercase}
+.rg .nonly ~ text.ntag{fill:var(--ok)}
+.rg .edge{stroke:var(--line);stroke-width:1.5;fill:none}
+.rg .edge.dash{stroke-dasharray:4 3}
+.rg .arh{fill:var(--line)}
+.scale{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 8px}
+.sc{border-radius:12px;padding:14px 15px;border:1px solid var(--line);background:var(--raised)}
+.sc b{display:block;font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.sc span{display:block;font-size:12px;color:var(--muted);margin-top:5px}
+.sc-a{border-color:var(--ok)}.sc-a b{color:var(--ok)}
+.sc-b b{color:var(--ink)}
+.sc-c{border-style:dashed}.sc-c b{color:var(--muted)}
+.capt{font-size:12.5px;color:var(--muted);margin:0 0 20px;max-width:64ch}
+.key{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 20px;font-size:12px;color:var(--muted)}
+.key span{display:flex;align-items:center;gap:6px}
+.key i{width:11px;height:11px;border-radius:3px;border:1px solid var(--line);display:block}
+.key .k-q{background:var(--raised)}
+.key .k-f{background:var(--adapt-bg);border-color:var(--adapt);border-radius:99px}
+.key .k-o{background:var(--ok-bg);border-color:var(--ok)}
+.key .k-r{background:var(--tint);border-color:var(--risk)}
 .big{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0}
 .big small{display:block;font-size:13px;font-weight:600;color:var(--muted);
   letter-spacing:0;margin-top:5px}
@@ -439,230 +471,410 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
 
 <section class="panel" id="rules">
   <h2>Rules</h2>
-  <p class="lede">Every rule that changes what a customer is asked. Generated from
-    <code>flags.js</code>, so this page cannot drift from what the flow does.</p>
+  <p class="lede">Each rule reads left to right: a question, the fact we derive from it, and what
+    that changes.</p>
 
-  <div class="stat">
-    <span class="pill ok">18 rules</span>
-    <span class="pill ok">48 combinations to check</span>
-    <span class="pill risk">2,563 if we branched on raw answers</span>
-    <span class="pill">6 verticals</span>
+  <div class="scale">
+    <div class="sc sc-a"><b>18</b><span>rules to get right</span></div>
+    <div class="sc sc-b"><b>48</b><span>combinations to check</span></div>
+    <div class="sc sc-c"><b>261,121</b><span>paths &mdash; which we never check</span></div>
+  </div>
+  <p class="capt">Paths fall out of the rules, like a calculator's answers fall out of its
+    operations. You check the operations.</p>
+
+  <div class="key">
+    <span><i class="k-q"></i>question asked</span>
+    <span><i class="k-f"></i>fact we derive</span>
+    <span><i class="k-o"></i>only asked if true</span>
+    <span><i class="k-r"></i>cannot be skipped</span>
   </div>
 
   <div class="card">
-    <h3>Does 250,000 paths matter? No &mdash; it counts the wrong thing</h3>
-    <ul class="pts">
-      <li><b>Paths are an output, not a thing you maintain.</b> Nobody writes a path. They fall out
-        of the rules, the way a calculator's answers fall out of its operations. You test the
-        operations, not every pair of numbers.</li>
-      <li><b>Consistency comes from construction.</b> Every path is assembled from the same spine,
-        the same pack and the same rules, so paths are consistent by build &mdash; not by inspection.</li>
-      <li><b>So the number that matters is 18, not 261,121.</b> That is how many rules can
-        independently be wrong, and it is a number a person can read in one sitting.</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3>Is it a lot of work? Bounded &mdash; as long as we never enumerate</h3>
-    <div class="escroll"><table class="etab">
-      <thead><tr><th>Work</th><th>Size</th><th>When</th></tr></thead>
-      <tbody>
-        <tr><td>Declare the rules</td><td>18 booleans</td><td>one-off, mostly done below</td></tr>
-        <tr><td>Make reference selection a pure function</td><td>one function</td><td>one-off</td></tr>
-        <tr><td>Coverage check over every combination</td><td>48 checks</td><td>automatic, seconds</td></tr>
-        <tr><td>Invariants over random paths</td><td>~10 assertions</td><td>automatic, thousands of paths</td></tr>
-        <tr><td>Human review of generated posts</td><td>a few per vertical</td><td>ongoing, sampled</td></tr>
-      </tbody>
-    </table></div>
-    <p style="margin-top:11px"><b>The unbounded version is manual QA per path, and that is the one to
-      refuse.</b> Checking 261,121 paths at one second each is three days of machine time and no
-      human ever reads the result.</p>
-  </div>
-
-  <div class="card">
-    <h3>The method, in four layers</h3>
-    <ul class="pts">
-      <li><b>1. Derive flags, never branch on raw answers.</b> &ldquo;Which treatments do you
-        offer&rdquo; has 511 possible answers. &ldquo;Is any of this medically supervised&rdquo; has
-        two. Branch on the second.</li>
-      <li><b>2. Coverage.</b> Every one of the 48 combinations must resolve to a complete
-        question set and at least one reference. Exhaustive, because the space is small.</li>
-      <li><b>3. Invariants.</b> Assert what must be true on <i>every</i> path &mdash; a compliance
-        question is never skippable for a business that needs it, no claim appears without evidence
-        on file, no path runs past its screen budget &mdash; then run them over thousands of randomly
-        generated answer sets. <b>This is what buys confidence across 261,121 without enumerating.</b></li>
-      <li><b>4. Golden paths.</b> A dozen representative journeys, snapshot-tested, for humans to read.</li>
-    </ul>
-  </div>
-
-  <h3 class="sec" style="margin-top:34px">The 18 rules</h3>
-  <p class="lede" style="margin-bottom:14px">Status is <b>proposed</b> throughout: these are defined
-    and reviewable in <code>flags.js</code>, and not yet wired into the flow.</p>
-
-  <div class="card">
-    <h3>Clinic or aesthetics <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim keep">
-      <b>medically_supervised</b> &mdash; true when any treatment is performed by a licensed medical practitioner.<br>
-      <span style="font-size:12.5px">from <b>C02</b> &ldquo;Which of those are performed by a licensed medical practitioner?&rdquo;
-      <br>&rarr; only asks C03, C09; makes C03 required</span>
-      <details><summary>why</summary><div class="in"><p>A practice registration number is meaningless for a beautician and mandatory for an aesthetic clinic. Today we ask everyone and let anyone skip.</p></div></details>
-    </div>
-
-    <div class="claim keep">
-      <b>shows_before_after</b> &mdash; true when before-and-after images are permitted for their treatments.<br>
-      <span style="font-size:12.5px">from <b>C04</b> &ldquo;Are before-and-after images permitted for your treatments?&rdquo;
-      <br>&rarr; only asks C12; makes C12 required</span>
-      <details><summary>why</summary><div class="in"><p>Patient photo consent only matters if they intend to post patients. If they do, it must not be skippable.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>prices_publishable</b> &mdash; true when prices may be published rather than consultation-only.<br>
-      <span style="font-size:12.5px">from <b>C07</b> &ldquo;Prices — publishable, or consultation only?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Does not change which questions are asked — it changes whether a price may appear in a generated post. A gate rule, not a flow rule.</p></div></details>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Classes or studio <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim keep">
-      <b>teaches_minors</b> &mdash; true when any selected age group is under 18.<br>
-      <span style="font-size:12.5px">from <b>K05</b> &ldquo;Age groups and levels you take.&rdquo;
-      <br>&rarr; only asks K10; makes K10 required</span>
-      <details><summary>why</summary><div class="in"><p>K10 already says &quot;if any are under 18, do you hold written consent&quot; — the dependency is written into the question copy but not enforced. Today an adults-only yoga studio is asked about child consent, and a childrens tuition centre may skip it. Both are wrong.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>has_trial</b> &mdash; true when a trial class is offered.<br>
-      <span style="font-size:12.5px">from <b>K08</b> &ldquo;Do you offer a trial class?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Unlocks a call-to-action the generator may use. No new questions.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>fixed_intakes</b> &mdash; true when intake dates are given rather than rolling enrolment.<br>
-      <span style="font-size:12.5px">from <b>K04</b> &ldquo;When are your next intake dates?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Drives calendar-aware posts before each intake.</p></div></details>
+    <h3>Clinic or aesthetics</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 304" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Clinic or aesthetics">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="46" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="64" class="nid">C02</text>
+<text x="17" y="79"
+    class="nsub">Which of those are performed</text>
+<text x="17" y="91"
+    class="nsub">by a licensed medica…</text>
+</g>
+<path d="M206 72 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="53" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="77" class="nflag"
+    text-anchor="middle">medically_supervised</text></g>
+<path d="M434 72 C468 72,
+        448 40, 478 40" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="16" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="34" class="nid">C03</text>
+        <text x="498" y="48" class="ntag">only asked · must answer</text>
+        <text x="498" y="59" class="nsub2">Your practice registration number…</text></g>
+<path d="M434 72 C468 72,
+        448 102, 478 102" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="78" width="228" height="48" rx="9"
+        class="nonly"/><text x="498" y="96" class="nid">C09</text>
+        <text x="498" y="110" class="ntag">only asked</text>
+        <text x="498" y="121" class="nsub2">Who is the named practitioner, an…</text></g>
+<g><rect x="6" y="153" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="171" class="nid">C04</text>
+<text x="17" y="186"
+    class="nsub">Are before-and-after images</text>
+<text x="17" y="198"
+    class="nsub">permitted for your treatments</text>
+</g>
+<path d="M206 179 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="160" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="184" class="nflag"
+    text-anchor="middle">shows_before_after</text></g>
+<path d="M434 179 C468 179,
+        448 178, 478 178" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="154" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="172" class="nid">C12</text>
+        <text x="498" y="186" class="ntag">only asked · must answer</text>
+        <text x="498" y="197" class="nsub2">May patients appear in photos, an…</text></g>
+<g><rect x="6" y="229" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="247" class="nid">C07</text>
+<text x="17" y="262"
+    class="nsub">Prices — publishable, or</text>
+<text x="17" y="274"
+    class="nsub">consultation only</text>
+</g>
+<path d="M206 255 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="236" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="260" class="nflag"
+    text-anchor="middle">prices_publishable</text></g>
+<path d="M434 255 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="235" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="259" class="nsub">used by the gate when
+      writing</text></g>
+      </svg>
     </div>
   </div>
 
   <div class="card">
-    <h3>Food &amp; drink <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim ">
-      <b>makes_dietary_claims</b> &mdash; true when halal, organic, MSG-free or similar is claimed.<br>
-      <span style="font-size:12.5px">from <b>F03</b> &ldquo;Any of these true of your food?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Every one of these needs evidence on file before it may appear in a post. The flag is what the gate checks against.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>takes_bookings</b> &mdash; true when bookings are accepted.<br>
-      <span style="font-size:12.5px">from <b>F06</b> &ldquo;Do you take bookings? How?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Decides whether a post may end on &quot;book a table&quot;. Without it the generator has no valid call to action and should ask.</p></div></details>
-    </div>
-
-    <div class="claim keep">
-      <b>has_own_photos</b> &mdash; true when they supply their own food photos.<br>
-      <span style="font-size:12.5px">from <b>F09</b> &ldquo;Do you have food photos we can use, or do we generate?&rdquo;
-      <br>&rarr; only asks F12; makes F12 required</span>
-      <details><summary>why</summary><div class="in"><p>Who took the photos, and whether we may use them, is only a question if photos exist. If they do, it is a rights question we must not skip.</p></div></details>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Salon or barber <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim keep">
-      <b>shows_before_after</b> &mdash; true when before-and-afters may be posted.<br>
-      <span style="font-size:12.5px">from <b>S06</b> &ldquo;May we post before-and-afters, and do your clients consent?&rdquo;
-      <br>&rarr; makes S06 required</span>
-      <details><summary>why</summary><div class="in"><p>Client consent is the whole risk in a salon feed.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>does_bridal</b> &mdash; true when bridal or event styling is offered.<br>
-      <span style="font-size:12.5px">from <b>S09</b> &ldquo;Do you do bridal or event styling?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>A seasonal content line the generator can plan against.</p></div></details>
-    </div>
-
-    <div class="claim keep">
-      <b>has_own_photos</b> &mdash; true when existing photos are supplied.<br>
-      <span style="font-size:12.5px">from <b>S12</b> &ldquo;Who took your existing photos, and can we use them?&rdquo;
-      <br>&rarr; only asks S12; makes S12 required</span>
-      <details><summary>why</summary><div class="in"><p>Same rights question as F12.</p></div></details>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Shop or product <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim keep">
-      <b>sells_online</b> &mdash; true when they sell anywhere other than in person.<br>
-      <span style="font-size:12.5px">from <b>R04</b> &ldquo;Where can people actually buy?&rdquo;
-      <br>&rarr; only asks R06, R08</span>
-      <details><summary>why</summary><div class="in"><p>Delivery times and returns policy are meaningless for a stall that only sells over a counter.</p></div></details>
-    </div>
-
-    <div class="claim keep">
-      <b>brand_restricted</b> &mdash; true when they stock a brand that restricts advertising.<br>
-      <span style="font-size:12.5px">from <b>R09</b> &ldquo;Do you stock a brand that restricts how you advertise it?&rdquo;
-      <br>&rarr; makes R09 required</span>
-      <details><summary>why</summary><div class="in"><p>A stocked brand can forbid discounting language outright.</p></div></details>
-    </div>
-
-    <div class="claim ">
-      <b>has_own_photos</b> &mdash; true when product photos are supplied.<br>
-      <span style="font-size:12.5px">from <b>R11</b> &ldquo;Do you have product photos, or do we generate?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Decides generate-vs-use, which changes image cost and look.</p></div></details>
+    <h3>Classes or studio</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 242" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Classes or studio">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="15" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="33" class="nid">K05</text>
+<text x="17" y="48"
+    class="nsub">Age groups and levels you take</text>
+</g>
+<path d="M206 41 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="22" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="46" class="nflag"
+    text-anchor="middle">teaches_minors</text></g>
+<path d="M434 41 C468 41,
+        448 40, 478 40" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="16" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="34" class="nid">K10</text>
+        <text x="498" y="48" class="ntag">only asked · must answer</text>
+        <text x="498" y="59" class="nsub2">Do students appear in photos — an…</text></g>
+<g><rect x="6" y="91" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="109" class="nid">K08</text>
+<text x="17" y="124"
+    class="nsub">Do you offer a trial class</text>
+</g>
+<path d="M206 117 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="98" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="122" class="nflag"
+    text-anchor="middle">has_trial</text></g>
+<path d="M434 117 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="97" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="121" class="nsub">used by the gate when
+      writing</text></g>
+<g><rect x="6" y="167" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="185" class="nid">K04</text>
+<text x="17" y="200"
+    class="nsub">When are your next intake</text>
+<text x="17" y="212"
+    class="nsub">dates</text>
+</g>
+<path d="M206 193 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="174" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="198" class="nflag"
+    text-anchor="middle">fixed_intakes</text></g>
+<path d="M434 193 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="173" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="197" class="nsub">used by the gate when
+      writing</text></g>
+      </svg>
     </div>
   </div>
 
   <div class="card">
-    <h3>Trades and home <span style="color:var(--muted);font-weight:600">&middot; 3 rules
-      &middot; 8 combinations</span></h3>
-
-    <div class="claim keep">
-      <b>licensed</b> &mdash; true when they hold a licence or certification.<br>
-      <span style="font-size:12.5px">from <b>T06</b> &ldquo;Are you licensed or certified? By whom?&rdquo;
-      <br>&rarr; makes T06 required</span>
-      <details><summary>why</summary><div class="in"><p>Claiming &quot;licensed&quot; without one is the single most dangerous line a trades post can carry.</p></div></details>
+    <h3>Food &amp; drink</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 242" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Food &amp; drink">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="15" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="33" class="nid">F03</text>
+<text x="17" y="48"
+    class="nsub">Any of these true of your food</text>
+</g>
+<path d="M206 41 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="22" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="46" class="nflag"
+    text-anchor="middle">makes_dietary_claims</text></g>
+<path d="M434 41 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="21" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="45" class="nsub">used by the gate when
+      writing</text></g>
+<g><rect x="6" y="91" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="109" class="nid">F06</text>
+<text x="17" y="124"
+    class="nsub">Do you take bookings? How</text>
+</g>
+<path d="M206 117 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="98" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="122" class="nflag"
+    text-anchor="middle">takes_bookings</text></g>
+<path d="M434 117 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="97" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="121" class="nsub">used by the gate when
+      writing</text></g>
+<g><rect x="6" y="167" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="185" class="nid">F09</text>
+<text x="17" y="200"
+    class="nsub">Do you have food photos we can</text>
+<text x="17" y="212"
+    class="nsub">use, or do we generate</text>
+</g>
+<path d="M206 193 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="174" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="198" class="nflag"
+    text-anchor="middle">has_own_photos</text></g>
+<path d="M434 193 C468 193,
+        448 192, 478 192" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="168" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="186" class="nid">F12</text>
+        <text x="498" y="200" class="ntag">only asked · must answer</text>
+        <text x="498" y="211" class="nsub2">Who took your existing photos, an…</text></g>
+      </svg>
     </div>
+  </div>
 
-    <div class="claim ">
-      <b>emergency_work</b> &mdash; true when emergency or after-hours work is offered.<br>
-      <span style="font-size:12.5px">from <b>T04</b> &ldquo;Do you do emergency or after-hours work?&rdquo;
-      <br>&rarr; no change to the questions; used by the gate when writing</span>
-      <details><summary>why</summary><div class="in"><p>Unlocks urgency content, which is otherwise a fabrication.</p></div></details>
+  <div class="card">
+    <h3>Salon or barber</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 242" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Salon or barber">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="15" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="33" class="nid">S06</text>
+<text x="17" y="48"
+    class="nsub">May we post before-and-afters,</text>
+<text x="17" y="60"
+    class="nsub">and do your clients consent</text>
+</g>
+<path d="M206 41 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="22" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="46" class="nflag"
+    text-anchor="middle">shows_before_after</text></g>
+<path d="M434 41 C468 41,
+        448 40, 478 40" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="16" width="228" height="48" rx="9"
+        class="nreq"/><text x="498" y="34" class="nid">S06</text>
+        <text x="498" y="48" class="ntag">must answer</text>
+        <text x="498" y="59" class="nsub2">May we post before-and-afters, an…</text></g>
+<g><rect x="6" y="91" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="109" class="nid">S09</text>
+<text x="17" y="124"
+    class="nsub">Do you do bridal or event</text>
+<text x="17" y="136"
+    class="nsub">styling</text>
+</g>
+<path d="M206 117 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="98" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="122" class="nflag"
+    text-anchor="middle">does_bridal</text></g>
+<path d="M434 117 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="97" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="121" class="nsub">used by the gate when
+      writing</text></g>
+<g><rect x="6" y="167" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="185" class="nid">S12</text>
+<text x="17" y="200"
+    class="nsub">Who took your existing photos,</text>
+<text x="17" y="212"
+    class="nsub">and can we use them</text>
+</g>
+<path d="M206 193 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="174" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="198" class="nflag"
+    text-anchor="middle">has_own_photos</text></g>
+<path d="M434 193 C468 193,
+        448 192, 478 192" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="168" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="186" class="nid">S12</text>
+        <text x="498" y="200" class="ntag">only asked · must answer</text>
+        <text x="498" y="211" class="nsub2">Who took your existing photos, an…</text></g>
+      </svg>
     </div>
+  </div>
 
-    <div class="claim keep">
-      <b>has_job_photos</b> &mdash; true when job photos exist.<br>
-      <span style="font-size:12.5px">from <b>T09</b> &ldquo;Do you have job photos, and do the homeowners permit their use?&rdquo;
-      <br>&rarr; only asks T09; makes T09 required</span>
-      <details><summary>why</summary><div class="in"><p>Homeowner permission is required before a job photo may be posted.</p></div></details>
+  <div class="card">
+    <h3>Shop or product</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 304" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Shop or product">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="46" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="64" class="nid">R04</text>
+<text x="17" y="79"
+    class="nsub">Where can people actually buy</text>
+</g>
+<path d="M206 72 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="53" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="77" class="nflag"
+    text-anchor="middle">sells_online</text></g>
+<path d="M434 72 C468 72,
+        448 40, 478 40" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="16" width="228" height="48" rx="9"
+        class="nonly"/><text x="498" y="34" class="nid">R06</text>
+        <text x="498" y="48" class="ntag">only asked</text>
+        <text x="498" y="59" class="nsub2">Do you post or deliver, and how l…</text></g>
+<path d="M434 72 C468 72,
+        448 102, 478 102" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="78" width="228" height="48" rx="9"
+        class="nonly"/><text x="498" y="96" class="nid">R08</text>
+        <text x="498" y="110" class="ntag">only asked</text>
+        <text x="498" y="121" class="nsub2">Returns or exchange policy — may…</text></g>
+<g><rect x="6" y="153" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="171" class="nid">R09</text>
+<text x="17" y="186"
+    class="nsub">Do you stock a brand that</text>
+<text x="17" y="198"
+    class="nsub">restricts how you advertise it</text>
+</g>
+<path d="M206 179 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="160" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="184" class="nflag"
+    text-anchor="middle">brand_restricted</text></g>
+<path d="M434 179 C468 179,
+        448 178, 478 178" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="154" width="228" height="48" rx="9"
+        class="nreq"/><text x="498" y="172" class="nid">R09</text>
+        <text x="498" y="186" class="ntag">must answer</text>
+        <text x="498" y="197" class="nsub2">Do you stock a brand that restric…</text></g>
+<g><rect x="6" y="229" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="247" class="nid">R11</text>
+<text x="17" y="262"
+    class="nsub">Do you have product photos, or</text>
+<text x="17" y="274"
+    class="nsub">do we generate</text>
+</g>
+<path d="M206 255 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="236" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="260" class="nflag"
+    text-anchor="middle">has_own_photos</text></g>
+<path d="M434 255 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="235" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="259" class="nsub">used by the gate when
+      writing</text></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Trades and home</h3>
+    <div class="escroll">
+      <svg viewBox="0 0 720 242" width="720" class="rg" role="img"
+        aria-label="Rule diagram for Trades and home">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+          markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="arh"/></marker></defs>
+        <g><rect x="6" y="15" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="33" class="nid">T06</text>
+<text x="17" y="48"
+    class="nsub">Are you licensed or certified?</text>
+<text x="17" y="60"
+    class="nsub">By whom</text>
+</g>
+<path d="M206 41 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="22" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="46" class="nflag"
+    text-anchor="middle">licensed</text></g>
+<path d="M434 41 C468 41,
+        448 40, 478 40" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="16" width="228" height="48" rx="9"
+        class="nreq"/><text x="498" y="34" class="nid">T06</text>
+        <text x="498" y="48" class="ntag">must answer</text>
+        <text x="498" y="59" class="nsub2">Are you licensed or certified? By…</text></g>
+<g><rect x="6" y="91" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="109" class="nid">T04</text>
+<text x="17" y="124"
+    class="nsub">Do you do emergency or</text>
+<text x="17" y="136"
+    class="nsub">after-hours work</text>
+</g>
+<path d="M206 117 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="98" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="122" class="nflag"
+    text-anchor="middle">emergency_work</text></g>
+<path d="M434 117 H478" class="edge dash"
+      marker-end="url(#ar)"/>
+<g><rect x="486" y="97" width="228" height="40" rx="9"
+      class="nn"/><text x="498" y="121" class="nsub">used by the gate when
+      writing</text></g>
+<g><rect x="6" y="167" width="200" height="52" rx="9"
+    class="nq"/><text x="17" y="185" class="nid">T09</text>
+<text x="17" y="200"
+    class="nsub">Do you have job photos, and do</text>
+<text x="17" y="212"
+    class="nsub">the homeowners permit thei…</text>
+</g>
+<path d="M206 193 H250" class="edge" marker-end="url(#ar)"/>
+<g><rect x="258" y="174" width="176" height="38" rx="19"
+    class="nf"/><text x="346" y="198" class="nflag"
+    text-anchor="middle">has_job_photos</text></g>
+<path d="M434 193 C468 193,
+        448 192, 478 192" class="edge" marker-end="url(#ar)"/>
+<g><rect x="486" y="168" width="228" height="48" rx="9"
+        class="nboth"/><text x="498" y="186" class="nid">T09</text>
+        <text x="498" y="200" class="ntag">only asked · must answer</text>
+        <text x="498" y="211" class="nsub2">Do you have job photos, and do th…</text></g>
+      </svg>
     </div>
   </div>
 
   <div class="card missing">
     <h3>The rule that proves the point</h3>
-    <p>K10 asks <i>&ldquo;do students appear in photos &mdash; and if any are under 18, do you hold
-      written consent&rdquo;</i>. <b>The dependency is written into the question itself and enforced
-      nowhere.</b></p>
-    <p>So today an adults-only yoga studio is asked about child consent, and a children&rsquo;s
-      tuition centre is allowed to skip it. <b>Both are wrong, and the second one is the one that
-      matters.</b> One rule &mdash; teaches_minors &mdash; fixes both.</p>
+    <p><b>K10</b> asks <i>&ldquo;do students appear in photos &mdash; and if any are under 18, do you
+      hold written consent?&rdquo;</i> The dependency is written into the question and enforced
+      nowhere.</p>
+    <p>An adults-only yoga studio gets asked about child consent. A children&rsquo;s tuition centre
+      is allowed to skip it. <b>One rule fixes both.</b></p>
+  </div>
+
+  <div class="card">
+    <h3>How we keep it consistent</h3>
+    <ul class="pts">
+      <li><b>Derive facts, never branch on the raw answer.</b> &ldquo;Which treatments&rdquo; has 511
+        answers. &ldquo;Medically supervised&rdquo; has two.</li>
+      <li><b>Check all 48 combinations</b> produce a full question set and at least one reference.</li>
+      <li><b>Assert what must be true on every path</b>, then run it over thousands of random answers.</li>
+      <li><b>A dozen golden paths</b> a human actually reads.</li>
+    </ul>
+    <p style="margin-top:11px;font-size:13px;color:var(--muted)">Status: defined and reviewable in
+      <code>flags.js</code>, not yet wired into the flow. This page is generated from that file.</p>
   </div>
 </section>
 
