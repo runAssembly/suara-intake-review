@@ -76,6 +76,20 @@ h2{font-size:20px;font-weight:700;letter-spacing:-.022em;margin:0 0 4px}
 .al-s{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);margin-top:9px}
 .al-s .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none}
 .missing h3{color:var(--risk)}
+.good{border-color:var(--ok)}
+.good h3{color:var(--ok)}
+.etab{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+.etab th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:700;padding:0 10px 7px 0;border-bottom:1px solid var(--line)}
+.etab td{padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top;
+  color:var(--muted);font-variant-numeric:tabular-nums}
+.etab td b{color:var(--ink);font-weight:600}
+.escroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.claim{font-size:13.5px;padding:9px 0 9px 13px;border-left:2px solid var(--line);
+  margin-top:9px;color:var(--muted)}
+.claim.kill{border-left-color:var(--risk)}
+.claim.keep{border-left-color:var(--ok)}
+.claim b{color:var(--ink);font-weight:600}
 
 .stat{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .pill{font-size:12px;font-weight:700;letter-spacing:.02em;border-radius:99px;
@@ -140,6 +154,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     <button role="tab" aria-selected="true" data-p="app">The app</button>
     <button role="tab" aria-selected="false" data-p="scen">Scenarios &amp; questions</button>
     <button role="tab" aria-selected="false" data-p="refs">References</button>
+    <button role="tab" aria-selected="false" data-p="ev">Evidence &amp; pricing</button>
   </nav>
 </header>
 
@@ -249,6 +264,164 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     <p>If a piece of generated content was <b>wrong</b> and had to be corrected, that correction is
       worth more than any polished example &mdash; it names the intake answer that was insufficient.
       I have asked Bob to flag those separately.</p>
+  </div>
+</section>
+
+<section class="panel" id="ev">
+  <h2>Evidence &amp; pricing</h2>
+  <p class="lede">What the research actually established, what it killed, and the cost model rebuilt
+    on measured numbers. Every figure here is labelled measured, confirmed, assumed or unknown.</p>
+
+  <div class="stat">
+    <span class="pill ok">4 confirmed</span>
+    <span class="pill risk">21 killed</span>
+    <span class="pill">21 sources</span>
+    <span class="pill">105 claims extracted</span>
+  </div>
+
+  <div class="card missing">
+    <h3>Retracted &mdash; a figure I reported that the research had already killed</h3>
+    <p>I reported that Malaysian agencies charge <b>RM2,000&ndash;7,800 a month</b>, from
+      &ldquo;four published rate cards, fetched directly&rdquo;, and that the local alternative
+      therefore costs 10 to 40 times what Suara would charge. <b>That claim is in the verifier&rsquo;s
+      refuted pile, not its confirmed pile.</b></p>
+    <p>What the refuted claim actually says is RM1,120&ndash;4,800, alongside a RM3,000&ndash;8,000
+      band that the source itself marks as <b>historic, 2020&ndash;2023</b>. I quoted an old band as
+      current. Its low end is about twice RM499, nowhere near ten to forty times.</p>
+    <p><b>&ldquo;Fetched directly&rdquo; was not true.</b> Across the entire run, Flow Digital appears
+      once, Walk Production once and FITB twice, and not one of their websites is among the 21
+      sources. The only related source is a blog post published by one of the named agencies. No rate
+      card was ever fetched.</p>
+    <p><b>Cause:</b> I read the run&rsquo;s narrative summary and never opened the confirmed and
+      refuted buckets. That summary reads identically whether a claim survived or was killed.</p>
+  </div>
+
+  <div class="card good">
+    <h3>What survived verification &mdash; usable</h3>
+    <div class="claim keep"><b>A 3-month minimum, frequently paid three months in advance, is the
+      Malaysian norm.</b> Month-to-month is explicitly refused by multiple agencies; 6- and 12-month
+      terms are outliers. This is the finding that matters commercially: Suara can take cash up front
+      without inventing a setup fee.</div>
+    <div class="claim keep"><b>The monthly retainer is the dominant model</b> for ongoing SMB social
+      media management. Per-post and hourly are real but secondary, and agencies mix models.</div>
+    <div class="claim keep"><b>US benchmark: USD 500&ndash;5,000 a month as the outer envelope, with
+      the typical engagement nearer USD 1,000&ndash;2,500.</b> Tiers scale on post count and platform
+      count, <b>not on client industry</b>. This is a US figure and must not be relabelled Malaysian.</div>
+    <div class="claim keep"><b>No evidence that regulated verticals pay a premium.</b> Nothing
+      surviving supports medical, dental, legal or financial clients paying more for the same social
+      content work, and nothing supports compliance or approval workflow as a pricing driver. This
+      killed our own &ldquo;price by risk&rdquo; argument.</div>
+    <div class="claim keep"><b>Revision policies and setup fees are not established.</b> No agency
+      publishes them and every specific number found was refuted. Treat as open.</div>
+  </div>
+
+  <div class="card">
+    <h3>Killed &mdash; do not reuse these</h3>
+    <div class="claim kill">Malaysian retainers at RM1,120&ndash;4,800, and the historic
+      RM3,000&ndash;8,000 band. <b>Refuted.</b></div>
+    <div class="claim kill">A healthcare-specialist agency&rsquo;s med spa packages at USD
+      1,699&ndash;2,499/mo as evidence of a regulated premium. <b>Refuted.</b></div>
+    <div class="claim kill">Setup fees waived as standard practice; 12-month terms as standard.
+      <b>Refuted.</b></div>
+    <div class="claim kill">Project-based work as the dominant revenue model over retainers.
+      <b>Refuted.</b></div>
+    <p style="margin-top:12px">Seventeen further claims were killed. The pattern: <b>every specific
+      number anyone published about revisions, setup fees or vertical pricing failed
+      verification.</b></p>
+  </div>
+
+  <h3 class="sec" style="margin-top:34px">The cost model, rebuilt</h3>
+  <div class="card missing">
+    <h3>The previous model was wrong in the line that mattered most</h3>
+    <p>It carried the language model at <b>USD 0.03 a generation plus USD 1.50 a month</b>, labelled
+      unknown &mdash; about USD 2.94 a customer a month. The measured figure is <b>USD 20 a customer
+      a month on Opus</b>, from 29,394 real API calls. The dominant cost line was understated roughly
+      sevenfold.</p>
+    <p>It also called that cost <b>infrastructure</b> and assumed multi-tenancy would shrink it.
+      Measured from the billing export, GCP infrastructure is close to nothing &mdash; the entire
+      Suara project is <b>USD 6.70 per 30 days</b>. The cost is Claude tokens, it is per customer,
+      and it does not fall with multi-tenancy.</p>
+    <p><b>Consequence:</b> I told Reza break-even was &ldquo;about 30 revision rounds per post, so
+      revisions are not a margin risk&rdquo;. On measured cost that is <b>single digits on Opus at
+      RM199</b>. Revisions are a real cost question again.</p>
+  </div>
+
+  <div class="card">
+    <h3>The biggest lever is not price &mdash; it is which model runs Suara</h3>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>Model</th><th>COGS RM/mo</th><th>Margin @199</th><th>@299</th><th>@499</th>
+          <th>Break-even revisions</th></tr></thead>
+        <tbody>
+          <tr><td><b>Opus</b></td><td>143</td><td>28%</td><td>52%</td><td>71%</td><td>9.4</td></tr>
+          <tr><td><b>Sonnet</b></td><td>93</td><td>53%</td><td>69%</td><td>81%</td><td>16.8</td></tr>
+          <tr><td><b>Haiku</b></td><td>44</td><td>78%</td><td>85%</td><td>91%</td><td>39.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:11px">At 2 included revisions, assuming 60% of language-model cost scales
+      with volume. <b>A cheap model swings margin more than any price move on the table.</b></p>
+    <p><b>But it cannot be a pure cost decision.</b> Given an identical brand lock and gate, Haiku and
+      Sonnet both wrote a cheerful Merdeka post inviting customers to a shop that is closed that day.
+      Only Opus caught it and refused to write. Haiku additionally invented &ldquo;limited spots&rdquo;
+      and turned a customer&rsquo;s review into a first-person claim. <b>The expensive thinking is the
+      checking, not the writing</b> &mdash; strong model on the gate, cheap model for drafting from a
+      cleared brief.</p>
+  </div>
+
+  <div class="card">
+    <h3>How sensitive is it to what we still do not know</h3>
+    <p>Break-even revision rounds per post, across the unknown share of language-model cost that
+      scales with volume:</p>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>Price</th><th>Opus 30%</th><th>Opus 60%</th><th>Opus 90%</th>
+          <th>Haiku 30%</th><th>Haiku 60%</th><th>Haiku 90%</th></tr></thead>
+        <tbody>
+          <tr><td><b>RM199</b></td><td>8.1</td><td>4.7</td><td>3.3</td><td>33.2</td><td>24.7</td><td>19.6</td></tr>
+          <tr><td><b>RM299</b></td><td>16.3</td><td>9.4</td><td>6.6</td><td>52.9</td><td>39.2</td><td>31.2</td></tr>
+          <tr><td><b>RM499</b></td><td>32.8</td><td>19.0</td><td>13.4</td><td>92.1</td><td>68.4</td><td>54.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:11px">On Opus at RM199 an unbounded revision promise is genuinely unsafe.
+      Everywhere else there is room, but the amount of room is set by a number nobody has measured.</p>
+  </div>
+
+  <div class="card">
+    <h3>Three price shapes, with consequences</h3>
+    <div class="escroll">
+      <table class="etab">
+        <thead><tr><th>Shape</th><th>Price</th><th>Contribution</th><th>Margin</th>
+          <th>Break-even</th><th>Cash at signup</th></tr></thead>
+        <tbody>
+          <tr><td><b>A &middot; Flat</b></td><td>RM299</td><td>RM156</td><td>52%</td><td>9.4</td><td>RM897</td></tr>
+          <tr><td><b>B &middot; By risk</b></td><td>RM299 / RM599</td><td>RM156 / RM456</td>
+            <td>52% / 76%</td><td>9.4 / 23.7</td><td>RM897 / RM1,797</td></tr>
+          <tr><td><b>C &middot; Metered</b></td><td>RM149 + RM15/post</td><td>RM207</td><td>63%</td>
+            <td>10.9</td><td>RM987</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:11px"><b>A</b> is simplest to sell and carries all the revision risk on our
+      side. <b>B</b> prices by exposure &mdash; but the research refuted the premium, so it is a
+      positioning bet on the gate being the product, not a market norm. <b>C</b> removes the
+      unbounded-revision problem structurally rather than by policy, earns most at 12 published posts,
+      and is the shape that survives a per-interaction future.</p>
+    <p>All three assume Opus and the conservative 60% marginal split. Cash at signup reflects the
+      three months in advance the market already expects.</p>
+  </div>
+
+  <div class="card missing">
+    <h3>What still has no number</h3>
+    <p><b>No verified Malaysian price anchor exists.</b> The figure previously quoted was refuted and
+      must not be used. Getting a real one means fetching agency rate cards properly.</p>
+    <p><b>Revisions per post</b> &mdash; unmeasurable until a real customer, so modelled as a range.
+      <b>The share of language-model cost that scales with volume</b> &mdash; decides what a revision
+      actually costs. <b>Completion rate across 29 screens</b> &mdash; with self-serve onboarding and
+      nobody there to rescue a stalled customer, this is the binding constraint: at 55% completion you
+      need 182 signups per 100 customers, at 70% you need 143. Every point of completion is a point of
+      paid acquisition you do not have to buy.</p>
   </div>
 </section>
 
